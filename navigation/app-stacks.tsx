@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   StyleSheet,
@@ -14,7 +14,7 @@ export type RootStackParamList = {
   MdpOublie: undefined;
   SeConnecter: undefined;
   EcranCarte: undefined;
-  CreerUneMaraude: undefined;
+  CreerUneMaraude: {localisation: Localisation};
   MesMaraudes: undefined;
   Ecran1Maraude: { maraude: Maraude };
   MaraudeItemComponent: undefined;
@@ -27,7 +27,7 @@ import { EcranCarte } from "../screens/EcranCarte";
 import { CreerUneMaraude } from "../screens/CreerUneMaraude";
 import { MesMaraudes } from "../screens/MesMaraudes";
 import { Ecran1Maraude } from "../screens/Ecran1Maraude";
-import { Maraude } from "../services/maraude.services";
+import { Localisation, Maraude } from "../services/maraude.services";
 
 const Stack = createNativeStackNavigator();
 
@@ -75,6 +75,8 @@ export interface MdpOublieProps {
 }
 export interface CreerUneMaraudeProps {
   navigation: StackNavigationProp<RootStackParamList, "CreerUneMaraude">;
+  route: RouteProp<RootStackParamList, "CreerUneMaraude">;
+
 }
 export interface EcranCarteProps {
   navigation: StackNavigationProp<RootStackParamList, "EcranCarte">;

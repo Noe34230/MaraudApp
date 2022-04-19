@@ -2,9 +2,8 @@ import * as React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { MaraudeListComponents } from "../components/MaraudesList";
 import { MesMaraudesProps } from "../navigation/app-stacks";
-import { Maraude } from "../services/maraude.services";
+import maraudesServices, { Maraude } from "../services/maraude.services";
 
-import { getDocs, deleteDoc, doc } from "firebase/firestore";
 
 import { db, colRef } from "../firebase/firebase-config";
 import { Header } from "../components/Header";
@@ -20,44 +19,44 @@ export class MesMaraudes extends React.Component<
   state: MesMaraudesState = {
     maraudes: [],
   };
-
   componentDidMount() {
-    this.afficherData();
+    this.loadMaraudes();
   }
-
   supprimerMaraude = (maraude: Maraude) => {
-    const MaraudeRef = doc(db, "Maraudes", maraude.id);
-    deleteDoc(MaraudeRef);
-    this.afficherData();
-    console.log("on regarde la liste après")
-    console.log(this.state.maraudes)
+    maraudesServices.remove(maraude);
+    this.loadMaraudes();
+  };
+  loadMaraudes = () => {
+    maraudesServices.getAll().then((theMaraudes) => {
+      this.setState({ maraudes: theMaraudes });
+    });
   };
 
-  afficherData = () => {
-    let temp: any = [];
-    getDocs(colRef)
-      .then((snapshot) => {
-        snapshot.docs.forEach((doc) => {
-          const notes = doc.get("notes");
-          const adresse = doc.get("adresse");
-          const id = doc.id;
-          const date = doc.get("date");
+  // afficherData = () => {
+  //   let temp: any = [];
+  //   getDocs(colRef)
+  //     .then((snapshot) => {
+  //       snapshot.docs.forEach((doc) => {
+  //         const notes = doc.get("notes");
+  //         const adresse = doc.get("adresse");
+  //         const id = doc.id;
+  //         const date = doc.get("date");
 
-          if (
-            this.state.maraudes.find(function (maraude: Maraude) {
-              return maraude.id == id;
-            })
-          ) {
-          } else {
-            temp.push({ id, notes, adresse, date });
-          }
-        });
-        this.setState({ maraudes: temp });
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
+  //         if (
+  //           this.state.maraudes.find(function (maraude: Maraude) {
+  //             return maraude.id == id;
+  //           })
+  //         ) {
+  //         } else {
+  //           temp.push({ id, notes, adresse, date });
+  //         }
+  //       });
+  //       this.setState({ maraudes: temp });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err.message);
+  //     });
+  // };
   render() {
     return (
       <View style={styles.container}>

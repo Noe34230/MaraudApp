@@ -5,8 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  Button,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import * as React from "react";
 import { authentication } from "../firebase/firebase-config";
@@ -44,35 +45,37 @@ export class Inscription extends React.Component<
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.cadre}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              autoCompleteType="email"
-              autoCapitalize="none"
-              placeholder="Email"
-              style={styles.textinputcontent}
-              onChangeText={(mail) => this.setState({ mail })}
-              value={this.state.mail}
-            />
-          </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <View style={styles.cadre}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                autoCompleteType="email"
+                autoCapitalize="none"
+                placeholder="Email"
+                style={styles.textinputcontent}
+                onChangeText={(mail) => this.setState({ mail })}
+                value={this.state.mail}
+              />
+            </View>
 
-          <View style={styles.inputContainer}>
-            <TextInput
-              secureTextEntry={true}
-              autoCompleteType="password"
-              autoCapitalize="none"
-              placeholder="Mot de passe"
-              style={styles.textinputcontent}
-              onChangeText={(mdp) => this.setState({ mdp })}
-              value={this.state.mdp}
-            />
+            <View style={styles.inputContainer}>
+              <TextInput
+                secureTextEntry={true}
+                autoCompleteType="password"
+                autoCapitalize="none"
+                placeholder="Mot de passe"
+                style={styles.textinputcontent}
+                onChangeText={(mdp) => this.setState({ mdp })}
+                value={this.state.mdp}
+              />
+            </View>
           </View>
+          <TouchableOpacity style={styles.btn} onPress={this.RegisterUser}>
+            <Text style={{ fontSize: 20 }}>S'inscrire</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.btn} onPress={this.RegisterUser}>
-          <Text style={{ fontSize: 20 }}>S'inscrire</Text>
-        </TouchableOpacity>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -96,12 +99,14 @@ const styles = StyleSheet.create({
     borderColor: "black",
   },
   btn: {
-    backgroundColor: "#fff",
-    borderRadius: 5,
-    alignItems: "center",
-    borderColor: "#000",
-    borderWidth: 1,
+    width: 200,
+    height: 40,
+    borderRadius: 30,
     justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    margin: 20,
+    borderWidth: 1,
   },
   inputContainer: {
     borderBottomColor: "#000",

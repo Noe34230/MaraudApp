@@ -5,16 +5,18 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import * as React from "react";
 import { EcranCarteProps } from "../navigation/app-stacks";
 import * as Location from "expo-location";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { Localisation } from "../services/maraude.services";
 import { Header } from "../components/Header";
 
 interface CarteState {
   adresse: Localisation;
+  isLoaded: boolean;
 }
 
 export class EcranCarte extends React.Component<EcranCarteProps, CarteState> {
@@ -22,9 +24,10 @@ export class EcranCarte extends React.Component<EcranCarteProps, CarteState> {
     adresse: {
       latitude: 0,
       longitude: 0,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
+      latitudeDelta: 0.1,
+      longitudeDelta: 0.1,
     },
+    isLoaded: false,
   };
   avoirAutorisation = () => {
     Location.requestForegroundPermissionsAsync()
@@ -43,11 +46,12 @@ export class EcranCarte extends React.Component<EcranCarteProps, CarteState> {
         console.log("Localisation récupérée carte");
         let latitude = localisation.coords.latitude;
         let longitude = localisation.coords.longitude;
-        let latitudeDelta = 0.0922;
-        let longitudeDelta = 0.0421;
+        let latitudeDelta = 0.01;
+        let longitudeDelta = 0.01;
         this.setState({
           adresse: { latitude, longitude, latitudeDelta, longitudeDelta },
         });
+        this.setState({ isLoaded: true });
       })
       .catch((er) => {
         console.log("azudiuaz");
@@ -61,23 +65,41 @@ export class EcranCarte extends React.Component<EcranCarteProps, CarteState> {
     this.setState({ adresse });
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Header navigation={this.props.navigation} />
+  renderElement() {
+    if ((this.state.isLoaded = true))
+      return (
         <MapView
           style={styles.map}
           region={this.state.adresse}
           onRegionChange={() => this.onRegionChange}
-        />
-          <TouchableOpacity
-          style={styles.bouton}
-            onPress={() => {
-              this.props.navigation.navigate("CreerUneMaraude");
+        >
+          <Marker
+            coordinate={{
+              latitude: this.state.adresse.latitude,
+              longitude: this.state.adresse.longitude,
             }}
-          >
-            <Text>+ Maraude</Text>
-          </TouchableOpacity>
+          />
+        </MapView>
+      );
+    else <ActivityIndicator size="large" color="#00ff00" />;
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Header navigation={this.props.navigation} />
+        {this.renderElement()}
+        <TouchableOpacity
+          style={styles.bouton}
+          onPress={() => {
+            this.props.navigation.navigate("CreerUneMaraude", {
+              localisation: this.state.adresse,
+            });
+            this.setState({ isLoaded: false });
+          }}
+        >
+          <Text>+ Maraude</Text>
+        </TouchableOpacity>
       </View>
     );
   }

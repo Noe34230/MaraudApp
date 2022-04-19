@@ -34,7 +34,7 @@ export class Header extends React.Component<{ navigation: any }, {}> {
 const styles = StyleSheet.create({
   container: {
     width: Dimensions.get("screen").width,
-    height: 80,
+    height: 100,
     backgroundColor: "orange",
     flexDirection: "row",
   },

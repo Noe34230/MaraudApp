@@ -4,10 +4,11 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import * as React from "react";
-import { MdpOublieProps } from "../navigation/app-stacks";
-import { useNavigation } from "@react-navigation/native";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { authentication } from "../firebase/firebase-config";
 
 interface MdpOublieState {
   login: string;
@@ -31,41 +32,32 @@ export class MdpOublie extends React.Component<
             <TextInput
               autoCompleteType="email"
               autoCapitalize="none"
-              secureTextEntry={true}
               placeholder="identifiant"
               style={styles.textinputcontent}
               onChangeText={(login: string) => this.setState({ login })}
               value={this.state.login}
             />
           </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              autoCompleteType="password"
-              autoCapitalize="none"
-              secureTextEntry={true}
-              placeholder="Nouveau mot de passe"
-              style={styles.textinputcontent}
-              onChangeText={(mdp: string) => this.setState({ mdp })}
-              value={this.state.mdp}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              autoCompleteType="password"
-              autoCapitalize="none"
-              secureTextEntry={true}
-              placeholder="Confirmer nouveau mot de passe"
-              style={styles.textinputcontent}
-              onChangeText={(confirmMdp: string) =>
-                this.setState({ confirmMdp })
-              }
-              value={this.state.confirmMdp}
-            />
-          </View>
+
           <TouchableOpacity
             style={styles.bouton}
             onPress={() => {
-              this.props.navigation.navigate("Inscription");
+              Alert.alert(
+                "Modification du mot de passe",
+                "Voulez-vous envoyer un lien de mofification de mot de passe par mail ?",
+                [
+                  {
+                    text: "Cancel",
+
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () =>
+                      sendPasswordResetEmail(authentication, this.state.login),
+                  },
+                ]
+              );
             }}
           >
             <Text>Valider</Text>
@@ -105,7 +97,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cadre: {
-    height: 375,
+    height: 250,
     width: 300,
     padding: 15,
     backgroundColor: "orange",

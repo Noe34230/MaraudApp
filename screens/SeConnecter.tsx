@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import * as React from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -36,57 +38,59 @@ export class SeConnecter extends React.Component<
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.cadre}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              autoCompleteType="email"
-              autoCapitalize="none"
-              placeholder="Email"
-              style={styles.textinputcontent}
-              onChangeText={(login: string) => this.setState({ login })}
-              value={this.state.login}
-            />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <View style={styles.cadre}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                autoCompleteType="email"
+                autoCapitalize="none"
+                placeholder="Email"
+                style={styles.textinputcontent}
+                onChangeText={(login: string) => this.setState({ login })}
+                value={this.state.login}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                autoCompleteType="password"
+                autoCapitalize="none"
+                secureTextEntry={true}
+                placeholder="Mot de passe"
+                style={styles.textinputcontent}
+                onChangeText={(mdp: string) => this.setState({ mdp })}
+                value={this.state.mdp}
+              />
+            </View>
+            <TouchableOpacity
+              style={styles.bouton}
+              onPress={() => {
+                this.connexionUser();
+              }}
+            >
+              <Text>Se Connecter</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate("MdpOublie");
+              }}
+              style={styles.btnMdpOublie}
+            >
+              <Text style={styles.testStyle}>Mot de passe Oublie</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              autoCompleteType="password"
-              autoCapitalize="none"
-              secureTextEntry={true}
-              placeholder="Mot de passe"
-              style={styles.textinputcontent}
-              onChangeText={(mdp: string) => this.setState({ mdp })}
-              value={this.state.mdp}
-            />
-          </View>
+
           <TouchableOpacity
             style={styles.bouton}
             onPress={() => {
-              this.connexionUser();
+              this.props.navigation.navigate("Inscription");
             }}
           >
-            <Text>Se Connecter</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate("MdpOublie");
-            }}
-            style={styles.btnMdpOublie}
-          >
-            <Text style={styles.testStyle}>Mot de passe Oublie</Text>
+            <Text>Créer un Compte</Text>
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity
-          style={styles.bouton}
-          onPress={() => {
-            this.props.navigation.navigate("Inscription");
-          }}
-        >
-          <Text>Créer un Compte</Text>
-        </TouchableOpacity>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }

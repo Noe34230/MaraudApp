@@ -22,8 +22,17 @@ export class MaraudeItemComponent extends React.Component<
           });
         }}
         onLongPress={() => {
-          this.props.delete(this.props.maraude);
-          Alert.alert("Maraude Supprimer");
+          Alert.alert("Supprimer", "Voulez-vous Supprimez cette maraude ?", [
+            {
+              text: "Cancel",
+
+              style: "cancel",
+            },
+            {
+              text: "OK",
+              onPress: () => this.props.delete(this.props.maraude),
+            },
+          ]);
         }}
       >
         <Text>{this.props.maraude.notes}</Text>
