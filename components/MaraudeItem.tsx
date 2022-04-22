@@ -35,6 +35,26 @@ export class MaraudeItemComponent extends React.Component<
           ]);
         }}
       >
+        {/* <TouchableOpacity
+          style={styles.supprBtn}
+          onPress={() => {
+            Alert.alert("Supprimer", "Voulez-vous Supprimez cette maraude ?", [
+              {
+                text: "Cancel",
+
+                style: "cancel",
+              },
+              {
+                text: "OK",
+                onPress: () => this.props.delete(this.props.maraude),
+              },
+            ]);
+          }}
+        >
+          <Text style={{ fontSize: 18, color: "red", fontWeight: "bold" }}>
+            -
+          </Text>
+        </TouchableOpacity> */}
         <Text>{this.props.maraude.notes}</Text>
       </TouchableOpacity>
     );
@@ -43,7 +63,7 @@ export class MaraudeItemComponent extends React.Component<
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "orange",
+    backgroundColor: "#FEA347",
     alignItems: "center",
     width: 200,
     height: 100,
@@ -55,5 +75,17 @@ const styles = StyleSheet.create({
     color: "white",
     paddingLeft: 30,
     width: "100%",
+  },
+  supprBtn: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    backgroundColor: "white",
+    borderRadius: 80,
+    width: 30,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    top: 0,
+    marginLeft: 20,
   },
 });

@@ -33,7 +33,5 @@ onAuthStateChanged(authentication, (user) => {
     const uid = user.uid;
     // ...
   } else {
-    // User is signed out
-    // ...
   }
 });

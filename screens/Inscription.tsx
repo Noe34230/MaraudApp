@@ -17,6 +17,7 @@ import { createUserWithEmailAndPassword } from "@firebase/auth";
 interface CreerCompteState {
   mdp: string;
   mail: string;
+  confirmMdp: string;
 }
 
 export class Inscription extends React.Component<
@@ -26,27 +27,52 @@ export class Inscription extends React.Component<
   state: CreerCompteState = {
     mdp: "",
     mail: "",
+    confirmMdp: "",
   };
   RegisterUser = () => {
-    createUserWithEmailAndPassword(
-      authentication,
-      this.state.mail,
-      this.state.mdp
-    )
-      .then(() => {
-        this.props.navigation.replace("EcranCarte");
-      })
-      .catch((error) => {
-        console.log("prout");
-        console.log(error);
-        Alert.alert("Erreur", error.message);
-      });
+    if (this.state.mdp == this.state.confirmMdp) {
+      createUserWithEmailAndPassword(
+        authentication,
+        this.state.mail,
+        this.state.mdp
+      )
+        .then(() => {
+          this.props.navigation.replace("EcranCarte");
+        })
+        .catch((error) => {
+          console.log(error);
+          if (
+            error.message ==
+            "Firebase: Password should be at least 6 characters (auth/weak-password)."
+          ) {
+            Alert.alert(
+              "Erreur",
+              "Les mots de passe doivent faire au moins 6 caractères"
+            );
+          } else if (
+            error.message == "Firebase: Error (auth/email-already-in-use)."
+          ) {
+            Alert.alert(
+              "Erreur",
+              "Un compte utilisant cette adresse mail existe déjà"
+            );
+          } else if (error.message == "Firebase: Error (auth/invalid-email).") {
+            Alert.alert("Erreur", "L'email est invalide");
+          } else {
+            Alert.alert("Erreur", error.message);
+          }
+        });
+    } else {
+      Alert.alert("Erreur", "Les mots de passe ne correspondent pas");
+    }
   };
 
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
+          <Text style={styles.titre}> MARAUDAPP</Text>
+
           <View style={styles.cadre}>
             <View style={styles.inputContainer}>
               <TextInput
@@ -70,6 +96,17 @@ export class Inscription extends React.Component<
                 value={this.state.mdp}
               />
             </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                secureTextEntry={true}
+                autoCompleteType="password"
+                autoCapitalize="none"
+                placeholder="Mot de passe"
+                style={styles.textinputcontent}
+                onChangeText={(confirmMdp) => this.setState({ confirmMdp })}
+                value={this.state.confirmMdp}
+              />
+            </View>
           </View>
           <TouchableOpacity style={styles.btn} onPress={this.RegisterUser}>
             <Text style={{ fontSize: 20 }}>S'inscrire</Text>
@@ -82,7 +119,7 @@ export class Inscription extends React.Component<
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "orange",
+    backgroundColor: "#FEA347",
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
@@ -91,12 +128,13 @@ const styles = StyleSheet.create({
     height: 375,
     width: 300,
     padding: 15,
-    backgroundColor: "orange",
+    backgroundColor: "#FEA347",
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "space-evenly",
     borderWidth: 1,
     borderColor: "black",
+    margin: 20,
   },
   btn: {
     width: 200,
@@ -124,5 +162,12 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     flex: 1,
     borderRadius: 30,
+  },
+  titre: {
+    fontStyle: "italic",
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "white",
+    margin: 50,
   },
 });

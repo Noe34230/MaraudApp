@@ -6,17 +6,16 @@ import {
   Alert,
   Dimensions,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import * as React from "react";
 import { EcranCarteProps } from "../navigation/app-stacks";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 import { Localisation } from "../services/maraude.services";
-import { Header } from "../components/Header";
 
 interface CarteState {
   adresse: Localisation;
-  isLoaded: boolean;
 }
 
 export class EcranCarte extends React.Component<EcranCarteProps, CarteState> {
@@ -27,7 +26,6 @@ export class EcranCarte extends React.Component<EcranCarteProps, CarteState> {
       latitudeDelta: 0.1,
       longitudeDelta: 0.1,
     },
-    isLoaded: false,
   };
   avoirAutorisation = () => {
     Location.requestForegroundPermissionsAsync()
@@ -41,6 +39,7 @@ export class EcranCarte extends React.Component<EcranCarteProps, CarteState> {
   };
 
   componentDidMount() {
+    this.avoirAutorisation();
     Location.getCurrentPositionAsync()
       .then((localisation) => {
         console.log("Localisation récupérée carte");
@@ -51,22 +50,16 @@ export class EcranCarte extends React.Component<EcranCarteProps, CarteState> {
         this.setState({
           adresse: { latitude, longitude, latitudeDelta, longitudeDelta },
         });
-        this.setState({ isLoaded: true });
       })
       .catch((er) => {
-        console.log("azudiuaz");
-        console.log(er);
+        Alert.alert("Erreur", "La carte ne parvient pas à charger... :(");
       });
-    console.log("Status");
-    this.avoirAutorisation();
   }
-
   onRegionChange(adresse: Localisation) {
     this.setState({ adresse });
   }
-
   renderElement() {
-    if ((this.state.isLoaded = true))
+    if (this.state.adresse.latitude != 0 || this.state.adresse.longitude != 0)
       return (
         <MapView
           style={styles.map}
@@ -78,41 +71,60 @@ export class EcranCarte extends React.Component<EcranCarteProps, CarteState> {
               latitude: this.state.adresse.latitude,
               longitude: this.state.adresse.longitude,
             }}
-          />
+            title={"Vous êtes ici"}
+          >
+            <Image
+              source={require("../assets/humain.png")}
+              style={{ height: 50, width: 50 }}
+            />
+          </Marker>
         </MapView>
       );
-    else <ActivityIndicator size="large" color="#00ff00" />;
+    else
+      return (
+        <View
+          style={{
+            alignSelf: "center",
+            position: "absolute",
+            flex: 1,
+            top: "50%",
+          }}
+        >
+          <ActivityIndicator size="large" color="#FEA347" />
+          <Text style={{ margin: 20 }}>La carte arrive, elle charge...</Text>
+        </View>
+      );
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Header navigation={this.props.navigation} />
         {this.renderElement()}
         <TouchableOpacity
           style={styles.bouton}
           onPress={() => {
-            this.props.navigation.navigate("CreerUneMaraude", {
+            this.props.navigation.push("CreerUneMaraude", {
               localisation: this.state.adresse,
             });
-            this.setState({ isLoaded: false });
           }}
         >
-          <Text>+ Maraude</Text>
+          <Text style={{ fontWeight: "bold", fontStyle: "italic" }}>
+            + Maraude
+          </Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, alignItems: "center" },
   bouton: {
     width: 200,
     height: 40,
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "orange",
+    backgroundColor: "#FEA347",
     top: "85%",
     margin: 20,
     position: "absolute",

@@ -1,11 +1,10 @@
 import * as React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaraudeListComponents } from "../components/MaraudesList";
 import { MesMaraudesProps } from "../navigation/app-stacks";
 import maraudesServices, { Maraude } from "../services/maraude.services";
 
-
-import { db, colRef } from "../firebase/firebase-config";
+import { db, colRef, authentication } from "../firebase/firebase-config";
 import { Header } from "../components/Header";
 
 interface MesMaraudesState {
@@ -32,41 +31,28 @@ export class MesMaraudes extends React.Component<
     });
   };
 
-  // afficherData = () => {
-  //   let temp: any = [];
-  //   getDocs(colRef)
-  //     .then((snapshot) => {
-  //       snapshot.docs.forEach((doc) => {
-  //         const notes = doc.get("notes");
-  //         const adresse = doc.get("adresse");
-  //         const id = doc.id;
-  //         const date = doc.get("date");
+  deconnexion = () => {
+    authentication.signOut();
+    this.props.navigation.navigate("SeConnecter");
+  };
 
-  //         if (
-  //           this.state.maraudes.find(function (maraude: Maraude) {
-  //             return maraude.id == id;
-  //           })
-  //         ) {
-  //         } else {
-  //           temp.push({ id, notes, adresse, date });
-  //         }
-  //       });
-  //       this.setState({ maraudes: temp });
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.message);
-  //     });
-  // };
   render() {
     return (
       <View style={styles.container}>
-        <Header navigation={this.props.navigation} />
+        <TouchableOpacity style={styles.decoStyle} onPress={this.deconnexion}>
+          <Text style={styles.text}>Deconnexion</Text>
+        </TouchableOpacity>
+
         <View style={styles.maraudList}>
           <MaraudeListComponents
             navigation={this.props.navigation}
             maraudes={this.state.maraudes}
             delete={this.supprimerMaraude}
           />
+          <Text style={styles.info}>
+            Pour supprimer une maraude : rester appuyer sur la maraude à
+            supprimer
+          </Text>
         </View>
       </View>
     );
@@ -82,7 +68,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-around",
   },
-  boutonTest: {
-    flex: 1,
+  decoStyle: {
+    margin: 10,
+    marginRight: 20,
+    alignSelf: "flex-end",
+    backgroundColor: "lightgrey",
+    padding: 10,
+    borderRadius: 30,
+  },
+  text: {
+    fontSize: 15,
+  },
+  info: {
+    fontStyle: "italic",
+    paddingBottom: 20,
+    padding: 10,
   },
 });

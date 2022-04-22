@@ -2,19 +2,13 @@ import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 export type RootStackParamList = {
   Inscription: undefined;
   MdpOublie: undefined;
   SeConnecter: undefined;
   EcranCarte: undefined;
-  CreerUneMaraude: {localisation: Localisation};
+  CreerUneMaraude: { localisation: Localisation };
   MesMaraudes: undefined;
   Ecran1Maraude: { maraude: Maraude };
   MaraudeItemComponent: undefined;
@@ -28,6 +22,7 @@ import { CreerUneMaraude } from "../screens/CreerUneMaraude";
 import { MesMaraudes } from "../screens/MesMaraudes";
 import { Ecran1Maraude } from "../screens/Ecran1Maraude";
 import { Localisation, Maraude } from "../services/maraude.services";
+import { Header } from "../components/Header";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,9 +31,12 @@ export default function HomeStack() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="SeConnecter"
-        screenOptions={({ navigation }) => ({
-          headerShown: false,
-          title: "",
+        screenOptions={({
+          navigation,
+        }: {
+          navigation: StackNavigationProp<RootStackParamList, any>;
+        }) => ({
+          header: () => <Header navigation={navigation} />,
         })}
       >
         <Stack.Screen name="EcranCarte" component={EcranCarte} />
@@ -76,7 +74,6 @@ export interface MdpOublieProps {
 export interface CreerUneMaraudeProps {
   navigation: StackNavigationProp<RootStackParamList, "CreerUneMaraude">;
   route: RouteProp<RootStackParamList, "CreerUneMaraude">;
-
 }
 export interface EcranCarteProps {
   navigation: StackNavigationProp<RootStackParamList, "EcranCarte">;
@@ -84,8 +81,6 @@ export interface EcranCarteProps {
 export interface MesMaraudesProps {
   navigation: StackNavigationProp<RootStackParamList, "MesMaraudes">;
 }
-
-
 
 const styles = StyleSheet.create({
   headerGauche: {

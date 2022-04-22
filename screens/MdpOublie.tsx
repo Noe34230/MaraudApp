@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  TouchableNativeFeedback,
 } from "react-native";
 import * as React from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
@@ -26,44 +27,59 @@ export class MdpOublie extends React.Component<
   };
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.cadre}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              autoCompleteType="email"
-              autoCapitalize="none"
-              placeholder="identifiant"
-              style={styles.textinputcontent}
-              onChangeText={(login: string) => this.setState({ login })}
-              value={this.state.login}
-            />
+      <TouchableNativeFeedback>
+        <View style={styles.container}>
+          <Text style={styles.titre}> MARAUDAPP</Text>
+          <View style={styles.cadre}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                autoCompleteType="email"
+                autoCapitalize="none"
+                placeholder="identifiant"
+                style={styles.textinputcontent}
+                onChangeText={(login: string) => this.setState({ login })}
+                value={this.state.login}
+              />
+            </View>
+
+            <TouchableOpacity
+              style={styles.bouton}
+              onPress={() => {
+                Alert.alert(
+                  "Modification du mot de passe",
+                  "Voulez-vous envoyer un lien de mofification de mot de passe par mail ?",
+                  [
+                    {
+                      text: "Cancel",
+
+                      style: "cancel",
+                    },
+                    {
+                      text: "OK",
+                      onPress: () =>
+                        sendPasswordResetEmail(authentication, this.state.login)
+                          .then(() => {
+                            Alert.alert(
+                              "Réussi",
+                              "Allez dans votre boîte mail pour modifier votre mot de passe"
+                            );
+                          })
+                          .catch((error) => {
+                            Alert.alert(
+                              "Erreur",
+                              "Le mail ne correspond à aucun compte"
+                            );
+                          }),
+                    },
+                  ]
+                );
+              }}
+            >
+              <Text>Valider</Text>
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            style={styles.bouton}
-            onPress={() => {
-              Alert.alert(
-                "Modification du mot de passe",
-                "Voulez-vous envoyer un lien de mofification de mot de passe par mail ?",
-                [
-                  {
-                    text: "Cancel",
-
-                    style: "cancel",
-                  },
-                  {
-                    text: "OK",
-                    onPress: () =>
-                      sendPasswordResetEmail(authentication, this.state.login),
-                  },
-                ]
-              );
-            }}
-          >
-            <Text>Valider</Text>
-          </TouchableOpacity>
         </View>
-      </View>
+      </TouchableNativeFeedback>
     );
   }
 }
@@ -80,7 +96,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   container: {
-    backgroundColor: "orange",
+    backgroundColor: "#FEA347",
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
@@ -100,17 +116,25 @@ const styles = StyleSheet.create({
     height: 250,
     width: 300,
     padding: 15,
-    backgroundColor: "orange",
+    backgroundColor: "#FEA347",
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "space-evenly",
     borderWidth: 1,
     borderColor: "black",
+    margin: 20,
   },
   textinputcontent: {
     height: 45,
     marginLeft: 16,
     flex: 1,
     borderRadius: 30,
+  },
+  titre: {
+    fontStyle: "italic",
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "white",
+    margin: 50,
   },
 });

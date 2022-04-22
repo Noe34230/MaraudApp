@@ -24,7 +24,6 @@ export class Ecran1Maraude extends React.Component<Ecran1MaraudeProps, {}> {
   render() {
     return (
       <View style={styles.container}>
-        <Header navigation={this.props.navigation} />
         <View style={styles.pageConatiner}>
           <MapView
             style={styles.map}
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "orange",
+    backgroundColor: "#FEA347",
     top: "85%",
     margin: 20,
     position: "absolute",

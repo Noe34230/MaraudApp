@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   container: {
     width: Dimensions.get("screen").width,
     height: 100,
-    backgroundColor: "orange",
+    backgroundColor: "#FEA347",
     flexDirection: "row",
   },
   bouton: {

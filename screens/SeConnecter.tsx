@@ -25,21 +25,34 @@ export class SeConnecter extends React.Component<
   };
   connexionUser = () => {
     signInWithEmailAndPassword(getAuth(), this.state.login, this.state.mdp)
-      .then((userCredential) => {
-        const user = userCredential.user;
+      .then(() => {
+        this.setState({ login: "", mdp: "" });
+        Keyboard.dismiss;
         this.props.navigation.navigate("EcranCarte");
       })
       .catch((error) => {
-        console.log("error");
-        console.log(error.message);
-        Alert.alert("Erreur", error.message);
+        console.log(error);
+        if (error.message == "Firebase: Error (auth/invalid-email).") {
+          Alert.alert("Erreur", "Votre adresse mail est invalide");
+        } else if (error.message == "Firebase: Error (auth/internal-error).") {
+          Alert.alert(
+            "Erreur",
+            "L'adresse mail et le login ne correspondent pas"
+          );
+        } else if (error.message == "Firebase: Error (auth/user-not-found).") {
+          console.log(error);
+          Alert.alert(
+            "Erreur",
+            "L'adresse mail n'existe pas dans notre base de donnée"
+          );
+        } else Alert.alert("Erreur", error.message);
       });
   };
-
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
+          <Text style={styles.titre}> MARAUDAPP</Text>
           <View style={styles.cadre}>
             <View style={styles.inputContainer}>
               <TextInput
@@ -96,7 +109,7 @@ export class SeConnecter extends React.Component<
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "orange",
+    backgroundColor: "#FEA347",
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
@@ -126,12 +139,13 @@ const styles = StyleSheet.create({
     height: 300,
     width: 300,
     padding: 15,
-    backgroundColor: "orange",
+    backgroundColor: "#FEA347",
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "space-evenly",
     borderWidth: 1,
     borderColor: "black",
+    margin: 40,
   },
   testStyle: {
     fontWeight: "bold",
@@ -149,5 +163,12 @@ const styles = StyleSheet.create({
 
   btnMdpOublie: {
     paddingBottom: 10,
+  },
+  titre: {
+    fontStyle: "italic",
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "white",
+    margin: 50,
   },
 });

@@ -69,7 +69,6 @@ export class CreerUneMaraude extends React.Component<
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          <Header navigation={this.props.navigation} />
           <View style={styles.pageConatiner}>
             <MapView
               style={styles.map}
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "orange",
+    backgroundColor: "#FEA347",
     margin: 20,
   },
 });
