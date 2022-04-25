@@ -10,16 +10,14 @@ import {
 import * as React from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { authentication } from "../firebase/firebase-config";
+import { MdpOublieProps } from "../navigation/app-stacks";
 
 interface MdpOublieState {
   login: string;
   mdp: string;
   confirmMdp: string;
 }
-export class MdpOublie extends React.Component<
-  { navigation: any },
-  MdpOublieState
-> {
+export class MdpOublie extends React.Component<MdpOublieProps, MdpOublieState> {
   state: MdpOublieState = {
     login: "",
     mdp: "",
@@ -57,7 +55,7 @@ export class MdpOublie extends React.Component<
                     {
                       text: "OK",
                       onPress: () =>
-                        sendPasswordResetEmail(authentication, this.state.login)
+                        sendPasswordResetEmail(authentication, this.state.login) // envoie un mail de réinitialisation de mot de passe
                           .then(() => {
                             Alert.alert(
                               "Réussi",

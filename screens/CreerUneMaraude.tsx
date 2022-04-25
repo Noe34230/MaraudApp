@@ -14,9 +14,7 @@ import { CreerUneMaraudeProps } from "../navigation/app-stacks";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { doc, setDoc } from "firebase/firestore";
 import { colRef } from "../firebase/firebase-config";
-import { Localisation } from "../services/maraude.services";
 import MapView, { Marker } from "react-native-maps";
-import { Header } from "../components/Header";
 import { getAuth } from "firebase/auth";
 
 // import { SeConnecterProps } from "../navigation/app-stacks";
@@ -35,16 +33,17 @@ export class CreerUneMaraude extends React.Component<
     date: new Date(),
   };
   add() {
+    //Cette fonction sert à ajouter une maraude dans firebase
     setDoc(doc(colRef), {
       adresse: this.props.route.params.localisation,
       notes: this.state.notes,
       date: this.state.date,
-      userId: getAuth().currentUser?.uid,
+      userId: getAuth().currentUser?.uid, //on récupère l'id de l'utilisateur connécté
     })
       .then(() => {
         Alert.alert(
           "Maraude Ajoutée",
-          "Vous venez d'ajouter une maraude avec succès ?",
+          "Vous venez d'ajouter une maraude avec succès ",
           [
             {
               text: "OK",
@@ -54,8 +53,7 @@ export class CreerUneMaraude extends React.Component<
         );
       })
       .catch((er) => {
-        let error = er.toString();
-        Alert.alert("marche pas", error);
+        Alert.alert("Erreur", "L'ajout n'a pas fonctionné, veuillez reessayer");
       });
   }
 

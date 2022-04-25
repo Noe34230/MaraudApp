@@ -10,13 +10,14 @@ import {
 } from "react-native";
 import * as React from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { SeConnecterProps } from "../navigation/app-stacks";
 
 interface ConnexionState {
   login: string;
   mdp: string;
 }
 export class SeConnecter extends React.Component<
-  { navigation: any },
+  SeConnecterProps,
   ConnexionState
 > {
   state: ConnexionState = {
@@ -24,6 +25,7 @@ export class SeConnecter extends React.Component<
     mdp: "",
   };
   connexionUser = () => {
+    //Fonction qui vérifie ke couple login et mot de passe dans Firebase
     signInWithEmailAndPassword(getAuth(), this.state.login, this.state.mdp)
       .then(() => {
         this.setState({ login: "", mdp: "" });
@@ -31,20 +33,22 @@ export class SeConnecter extends React.Component<
         this.props.navigation.navigate("EcranCarte");
       })
       .catch((error) => {
+        //Affiche une alerte différente suivant les erreurs renvoyés par Firebase
         console.log(error);
         if (error.message == "Firebase: Error (auth/invalid-email).") {
           Alert.alert("Erreur", "Votre adresse mail est invalide");
         } else if (error.message == "Firebase: Error (auth/internal-error).") {
           Alert.alert(
             "Erreur",
-            "L'adresse mail et le login ne correspondent pas"
+            "Erreur dû à notre base de donnée, Veuillez reessayer"
           );
         } else if (error.message == "Firebase: Error (auth/user-not-found).") {
-          console.log(error);
           Alert.alert(
             "Erreur",
-            "L'adresse mail n'existe pas dans notre base de donnée"
+            "Aucun utilisateur n'a de compte avec cette adresse mail"
           );
+        } else if (error.message == "Firebase: Error (auth/wrong-password).") {
+          Alert.alert("Erreur", "Le mot de passe est incorrect");
         } else Alert.alert("Erreur", error.message);
       });
   };

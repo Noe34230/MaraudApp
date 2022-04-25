@@ -28,22 +28,23 @@ export class EcranCarte extends React.Component<EcranCarteProps, CarteState> {
     },
   };
   avoirAutorisation = () => {
+    //On récupère l'autorisation du mobile pour la position de l'utilisateur
     Location.requestForegroundPermissionsAsync()
       .then(({ status }) => {})
       .catch((er) => {
         console.log(er);
         if (status !== "granted") {
-          Alert.alert("accès a la carte refusé", "batard");
+          Alert.alert("accès à la carte refusé");
         }
       });
   };
 
   componentDidMount() {
     this.avoirAutorisation();
-    Location.getCurrentPositionAsync()
+    Location.getCurrentPositionAsync() //Cette fonction retourne une promesse de la position
       .then((localisation) => {
         console.log("Localisation récupérée carte");
-        let latitude = localisation.coords.latitude;
+        let latitude = localisation.coords.latitude; //la variable localisation indique la position de l'utilisateur
         let longitude = localisation.coords.longitude;
         let latitudeDelta = 0.01;
         let longitudeDelta = 0.01;
@@ -55,17 +56,11 @@ export class EcranCarte extends React.Component<EcranCarteProps, CarteState> {
         Alert.alert("Erreur", "La carte ne parvient pas à charger... :(");
       });
   }
-  onRegionChange(adresse: Localisation) {
-    this.setState({ adresse });
-  }
-  renderElement() {
+
+  renderElement() { //Si la carte n'a pas encore chargée on affiche une roue de chargement 
     if (this.state.adresse.latitude != 0 || this.state.adresse.longitude != 0)
       return (
-        <MapView
-          style={styles.map}
-          region={this.state.adresse}
-          onRegionChange={() => this.onRegionChange}
-        >
+        <MapView style={styles.map} region={this.state.adresse}>
           <Marker
             coordinate={{
               latitude: this.state.adresse.latitude,

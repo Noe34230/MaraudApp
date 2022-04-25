@@ -1,26 +1,14 @@
 import { StyleSheet, View, Text } from "react-native";
 import * as React from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../navigation/app-stacks";
+import { Ecran1MaraudeProps, RootStackParamList } from "../navigation/app-stacks";
 import { RouteProp } from "@react-navigation/native";
 import { Header } from "../components/Header";
 import MapView, { Marker } from "react-native-maps";
 
-export interface Ecran1MaraudeProps {
-  navigation: StackNavigationProp<RootStackParamList, "Ecran1Maraude">;
-  route: RouteProp<RootStackParamList, "Ecran1Maraude">;
-}
+
 
 export class Ecran1Maraude extends React.Component<Ecran1MaraudeProps, {}> {
-  recupereInfos = () => {
-    const maraude = this.props.route.params.maraude;
-  };
-
-  componentDidMount() {
-    this.props.route;
-    debugger;
-  }
-
   render() {
     return (
       <View style={styles.container}>

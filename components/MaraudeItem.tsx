@@ -35,26 +35,6 @@ export class MaraudeItemComponent extends React.Component<
           ]);
         }}
       >
-        {/* <TouchableOpacity
-          style={styles.supprBtn}
-          onPress={() => {
-            Alert.alert("Supprimer", "Voulez-vous Supprimez cette maraude ?", [
-              {
-                text: "Cancel",
-
-                style: "cancel",
-              },
-              {
-                text: "OK",
-                onPress: () => this.props.delete(this.props.maraude),
-              },
-            ]);
-          }}
-        >
-          <Text style={{ fontSize: 18, color: "red", fontWeight: "bold" }}>
-            -
-          </Text>
-        </TouchableOpacity> */}
         <Text>{this.props.maraude.notes}</Text>
       </TouchableOpacity>
     );

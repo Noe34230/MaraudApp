@@ -9,6 +9,7 @@ import {
 import { colRef, db } from "../firebase/firebase-config";
 
 export type Maraude = {
+  //Ici on définit le type Maraude
   adresse: Localisation;
   id: string;
   notes: string;
@@ -17,6 +18,7 @@ export type Maraude = {
 };
 
 export type Localisation = {
+  //Ici on définit le type Localisation
   latitude: number;
   longitude: number;
   latitudeDelta: number;
@@ -45,15 +47,11 @@ class MaraudeService {
               this.maraudes.push({ id, notes, adresse, date, userId });
             }
           }
-          
         });
       })
-      .catch((err) => {
-        console.log(err.message);
-      });
-
     return this.maraudes;
   }
+  
 
   async remove(maraude: Maraude) {
     const MaraudeRef = doc(db, "Maraudes", maraude.id);

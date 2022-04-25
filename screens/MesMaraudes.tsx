@@ -19,9 +19,9 @@ export class MesMaraudes extends React.Component<
     maraudes: [],
   };
   componentDidMount() {
-    this.loadMaraudes();
+    this.loadMaraudes(); //Une fois que le composant a chargé on actualise la liste des maraudes
   }
-  supprimerMaraude = (maraude: Maraude) => {
+  supprimerMaraude = (maraude: Maraude) => { //Permet de supprimer une maraude
     maraudesServices.remove(maraude);
     this.loadMaraudes();
   };
@@ -31,7 +31,7 @@ export class MesMaraudes extends React.Component<
     });
   };
 
-  deconnexion = () => {
+  deconnexion = () => { //Deconnexion de l'utilisateur 
     authentication.signOut();
     this.props.navigation.navigate("SeConnecter");
   };

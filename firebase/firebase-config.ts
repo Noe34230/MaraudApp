@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 //import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -26,12 +26,9 @@ export const db = getFirestore();
 export const colRef = collection(db, "Maraudes");
 
 export const authentication = getAuth(app);
-onAuthStateChanged(authentication, (user) => {
+onAuthStateChanged(authentication, (user) => {//on
   if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
     const uid = user.uid;
-    // ...
   } else {
   }
 });

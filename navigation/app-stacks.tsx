@@ -2,7 +2,6 @@ import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { StyleSheet, View, Text } from "react-native";
 export type RootStackParamList = {
   Inscription: undefined;
   MdpOublie: undefined;
@@ -34,7 +33,7 @@ export default function HomeStack() {
         screenOptions={({
           navigation,
         }: {
-          navigation: StackNavigationProp<RootStackParamList, any>;
+          navigation: StackNavigationProp<RootStackParamList>;
         }) => ({
           header: () => <Header navigation={navigation} />,
         })}
@@ -81,12 +80,8 @@ export interface EcranCarteProps {
 export interface MesMaraudesProps {
   navigation: StackNavigationProp<RootStackParamList, "MesMaraudes">;
 }
+export interface Ecran1MaraudeProps {
+  navigation: StackNavigationProp<RootStackParamList, "Ecran1Maraude">;
+  route: RouteProp<RootStackParamList, "Ecran1Maraude">;
+}
 
-const styles = StyleSheet.create({
-  headerGauche: {
-    flex: 1,
-  },
-  headerDroit: {
-    flex: 1,
-  },
-});

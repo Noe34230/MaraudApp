@@ -36,10 +36,10 @@ export class Inscription extends React.Component<
         this.state.mail,
         this.state.mdp
       )
-        .then(() => {
+        .then(() => { //Si l'inscription a réussi on se connecte à la carte
           this.props.navigation.replace("EcranCarte");
         })
-        .catch((error) => {
+        .catch((error) => { //Suivant les messages d'erreurs renvoyés par Firebase on adapte l'alerte affiché à l'utilisateur
           console.log(error);
           if (
             error.message ==
