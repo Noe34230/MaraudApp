@@ -6,6 +6,7 @@ import maraudesServices, { Maraude } from "../services/maraude.services";
 
 import { db, colRef, authentication } from "../firebase/firebase-config";
 import { Header } from "../components/Header";
+import { getAuth } from "firebase/auth";
 
 interface MesMaraudesState {
   maraudes: Array<Maraude>;
@@ -21,18 +22,21 @@ export class MesMaraudes extends React.Component<
   componentDidMount() {
     this.loadMaraudes(); //Une fois que le composant a chargé on actualise la liste des maraudes
   }
-  supprimerMaraude = (maraude: Maraude) => { //Permet de supprimer une maraude
+  supprimerMaraude = (maraude: Maraude) => {
+    //Permet de supprimer une maraude
     maraudesServices.remove(maraude);
     this.loadMaraudes();
   };
+
   loadMaraudes = () => {
     maraudesServices.getAll().then((theMaraudes) => {
       this.setState({ maraudes: theMaraudes });
     });
   };
 
-  deconnexion = () => { //Deconnexion de l'utilisateur 
-    authentication.signOut();
+  deconnexion = () => {
+    //Deconnexion de l'utilisateur
+    maraudesServices.disconnect();
     this.props.navigation.navigate("SeConnecter");
   };
 

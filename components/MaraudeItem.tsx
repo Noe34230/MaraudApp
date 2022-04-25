@@ -12,6 +12,10 @@ export class MaraudeItemComponent extends React.Component<
   MaraudeItemComponentProps,
   {}
 > {
+  afficherChaine = () => {
+    const str = this.props.maraude;
+    return this.props.maraude.notes.substring(0, 30);
+  };
   render() {
     return (
       <TouchableOpacity
@@ -35,7 +39,7 @@ export class MaraudeItemComponent extends React.Component<
           ]);
         }}
       >
-        <Text>{this.props.maraude.notes}</Text>
+        <Text>{this.afficherChaine()}...</Text>
       </TouchableOpacity>
     );
   }
@@ -47,9 +51,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 200,
     height: 100,
-    justifyContent: "space-around",
+    justifyContent: "center",
     borderRadius: 15,
     margin: 20,
+    padding: 5,
   },
   inputText: {
     color: "white",

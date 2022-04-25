@@ -47,7 +47,7 @@ export class CreerUneMaraude extends React.Component<
           [
             {
               text: "OK",
-              onPress: () => this.props.navigation.navigate("EcranCarte"),
+              onPress: () => this.props.navigation.navigate("MesMaraudes"),
             },
           ]
         );
@@ -128,7 +128,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   inputText: {
-    height: 45,
     marginLeft: 16,
     flex: 1,
     borderRadius: 30,

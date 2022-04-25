@@ -1,12 +1,13 @@
 import { StyleSheet, View, Text } from "react-native";
 import * as React from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Ecran1MaraudeProps, RootStackParamList } from "../navigation/app-stacks";
+import {
+  Ecran1MaraudeProps,
+  RootStackParamList,
+} from "../navigation/app-stacks";
 import { RouteProp } from "@react-navigation/native";
 import { Header } from "../components/Header";
 import MapView, { Marker } from "react-native-maps";
-
-
 
 export class Ecran1Maraude extends React.Component<Ecran1MaraudeProps, {}> {
   render() {
@@ -52,24 +53,27 @@ const styles = StyleSheet.create({
     width: 250,
     height: 250,
     marginBottom: 20,
-    flexDirection: "row",
+    padding: 7,
+    flexShrink: 1,
   },
   notesText: {
     height: 45,
-    marginLeft: 16,
-    flex: 1,
     borderRadius: 30,
+    width: 250,
+    flexGrow: 1,
   },
   dateStyle: {
     backgroundColor: "lightgrey",
     padding: 10,
     borderRadius: 20,
+    height: 40,
   },
   map: {
     width: 300,
     height: 250,
     margin: 20,
     borderRadius: 80,
+    borderWidth: 1,
   },
   bouton: {
     width: 200,

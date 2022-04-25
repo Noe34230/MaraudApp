@@ -61,6 +61,7 @@ export class MdpOublie extends React.Component<MdpOublieProps, MdpOublieState> {
                               "Réussi",
                               "Allez dans votre boîte mail pour modifier votre mot de passe"
                             );
+                            this.props.navigation.navigate("SeConnecter");
                           })
                           .catch((error) => {
                             Alert.alert(
